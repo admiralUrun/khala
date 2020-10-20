@@ -1,0 +1,7 @@
+drop table if exists messages;
+create table messages(
+    id int primary key,
+    author varchar(128) not null,
+    message text,
+    wasSend varchar(128)
+);
