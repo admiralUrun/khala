@@ -1,12 +1,12 @@
 <template>
   <div id="Welcome">
     <h1>Welcome to Khala</h1>
-    <h1 v-if="nameInput === ''">{{defaultText}}</h1>
+    <h1 v-if="nameInput === ''">{{ title }}</h1>
     <h1 v-else>My name is: {{nameInput}}</h1>
     <b-form inline>
       <div class="welcomeInput">
         <b-input id="nameInput" type="text" v-model="nameInput"></b-input>
-        <b-button v-on:click.prevent="sendName(nameInput)" class="send" :disabled="nameInput === ''">
+        <b-button :to="'/messenger/' + nameInput" class="send" :disabled="nameInput === ''">
           <b-icon-triangle-fill rotate="90" variant="success" font-scale="1.5">
           </b-icon-triangle-fill>
         </b-button>
@@ -23,21 +23,10 @@ export default {
   name: "Welcome",
   data() {
     return {
-      defaultText: "Tell us your name",
+      title: "Tell us your name",
       nameInput: ""
     }
-  },
-  methods: {
-    sendName: function (name) {
-      this.$http.post('http://localhost:9000/posting', {
-        title: `newUser`,
-        username: name,
-      }).then(function (data) {
-        console.log(data)
-        console.log(data.body)
-      })
-    }
-  },
+  }
 }
 </script>
 

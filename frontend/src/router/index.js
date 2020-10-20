@@ -12,9 +12,10 @@ const routes = [
     component: Welcome
   },
   {
-    path: '/messenger',
+    path: '/messenger/:user',
     name: 'Messenger',
-    component: Messenger
+    component: Messenger,
+    props: true
   }
 ]
 
@@ -23,6 +24,3 @@ const router = new VueRouter({
 })
 
 export default router
-export const actions = {
-
-}

@@ -48,6 +48,10 @@ export default {
       type: String,
       required: true
     },
+    author: {
+      type: String,
+      required: true
+    },
     messages : []
   },
   components: {
@@ -74,9 +78,14 @@ export default {
 
   },
   methods:{
-    sendMessage: function (message) {
+    sendMessage: function (message) { // TODO: think how to reference author from props
       console.log(message)
-      this.connection.send(message)
+      this.connection.send({
+        id: 1,
+        author: '???',
+        message: message,
+        wasSent: new Date().toDateString()
+      })
     },
     addToMessages: function (message) {
       this.chatMessages.push(message)

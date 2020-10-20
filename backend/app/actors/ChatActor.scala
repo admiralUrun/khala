@@ -1,5 +1,6 @@
 package actors
 
+import play.api.libs.json.JsValue
 import actors.ChatActor._
 import akka.actor._
 
@@ -16,6 +17,6 @@ class ChatActor extends Actor {
 
 object ChatActor {
   case class NewChatter(chatter: ActorRef)
-  case class Message(msg: String)
+  case class Message(msg: play.api.libs.json.JsValue)
   def props: Props = Props(new ChatActor)
 }
