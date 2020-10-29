@@ -6,7 +6,7 @@
     <b-form inline>
       <div class="welcomeInput">
         <b-input id="nameInput" type="text" v-model="nameInput"></b-input>
-        <b-button :to="'/messenger/' + nameInput" class="send" :disabled="nameInput === ''">
+        <b-button v-on:click="login(nameInput)" class="send" :disabled="nameInput === ''">
           <b-icon-triangle-fill rotate="90" variant="success" font-scale="1.5">
           </b-icon-triangle-fill>
         </b-button>
@@ -25,6 +25,12 @@ export default {
     return {
       title: "Tell us your name",
       nameInput: ""
+    }
+  },
+  methods: {
+    login(username) {
+      this.$store.commit('setUsername', username)
+      this.$router.push({name: 'Messenger', params: {user: username}})
     }
   }
 }

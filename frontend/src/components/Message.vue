@@ -1,7 +1,6 @@
 <template>
-  <div :id="'m-' + id">
-      <b-row>
-        <b-col sm="10">
+      <b-row :id="'m-' + id" class="message">
+        <b-col lg="11" class="messageContent">
           <b-row>
             {{author}}
           </b-row>
@@ -9,17 +8,10 @@
             {{message}}
           </b-row>
         </b-col>
-
-        <b-col sm="1">
-          <b-row>
-            !!!
-          </b-row>
-          <b-row>
+        <div class="align-text-bottom">
             {{wasSent}}
-          </b-row>
-        </b-col>
+        </div>
       </b-row>
-  </div>
 </template>
 
 <script>
@@ -41,15 +33,23 @@ export default {
     wasSent: {
       type: String,
       required: true
-    },
-    delivered: {
-      type: Boolean,
-      required: true
     }
   }
 }
 </script>
 
 <style scoped>
+.message {
+  max-width: 1000px;
+  color: azure;
+  background-color: #1c5cab;
+  border: 1px solid #151826;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.messageContent {
+  margin-left: 2px;
+}
 
 </style>

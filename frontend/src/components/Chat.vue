@@ -4,22 +4,18 @@
       <b-row>
         <header>
           <h1>
-            {{name}}
+            {{ name }}
           </h1>
         </header>
       </b-row>
-      <b-row class="placeForMessages" >
-        <ul>
-        <Message v-for="message in chatMessages" :key="message.id"
-                 :id="message.id"
-                 :author="message.author"
-                 :message="message.message"
-                 :delivered="message.delivered"
-                 :was-sent="message.wasSent"
-                 ></Message>
-        </ul>
-      </b-row>
-
+        <div class="placeForMessages container-fluid">
+            <Message v-for="message in getAllMessages" :key="message.id"
+                     :id="message.id"
+                     :author="message.author"
+                     :message="message.message"
+                     :was-sent="message.wasSent"
+            ></Message>
+        </div>
       <b-row>
         <b-col xl="11">
           <b-textarea v-model="message"></b-textarea>
@@ -41,18 +37,15 @@
 
 <script>
 import Message from "@/components/Message.vue";
+import {mapGetters} from 'vuex'
+
 export default {
   name: "Chat",
   props: {
     name: {
       type: String,
       required: true
-    },
-    author: {
-      type: String,
-      required: true
-    },
-    messages : []
+    }
   },
   components: {
     'Message': Message
@@ -60,38 +53,37 @@ export default {
   data() {
     return {
       message: '',
-      connection: null,
-      chatMessages: this.messages
     }
   },
-  mounted() {
-    this.connection = new WebSocket('ws://localhost:9000/startWebsocketConnection')
+  computed: mapGetters(['getAllMessages']),
+  methods: {
+    sendMessage: function (message) {
+      function timeFormat(time) {
+        if(time < 10) return `0` + time
+        else return time.toString()
+      }
+      const currentDate = new Date()
+      const h = currentDate.getHours()
+      const m = currentDate.getMinutes()
+      const time  = timeFormat(h) + ':' + timeFormat(m)
 
-    this.connection.onopen = function (event) {
-      console.log(event)
+      console.log(time)
+      this.$socket.send(JSON.stringify({
+            feat: this.$store.getters.getFeat,
+            message: {
+              id: null,
+              author: this.$store.getters.getUsername,
+              message: message,
+              wasSent: time
+            },
+          }
+      ))
     }
-
-    this.connection.onmessage = function (message) {
-      console.log(message)
-    }
-
-
   },
-  methods:{
-    sendMessage: function (message) { // TODO: think how to reference author from props
-      console.log(message)
-      this.connection.send({
-        id: 1,
-        author: '???',
-        message: message,
-        wasSent: new Date().toDateString()
-      })
-    },
-    addToMessages: function (message) {
-      this.chatMessages.push(message)
-      console.log(this.chatMessages)
-    }
-  }
+  // beforeMount() {
+  //   console.log(this.$route.query.user)
+  //   this.$store.commit('setUsername', this.$route.query.user)
+  // }
 }
 // TODO: Move .send to Global CSS or creat new component
 </script>
@@ -100,5 +92,12 @@ export default {
 .send {
   border: none;
   background: none;
+}
+
+.placeForMessages {
+  overflow: scroll;
+  min-height: 100px;
+  max-height: 600px;
+  margin-bottom: 5px;
 }
 </style>
