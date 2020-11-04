@@ -15,7 +15,6 @@ Vue.use(VueNativeSock, 'ws://localhost:9000/startWebsocketConnection', {
 })
 Vue.config.productionTip = false
 
-
 new Vue({
   store: store,
   router,

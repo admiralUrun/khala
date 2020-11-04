@@ -18,7 +18,7 @@
         </div>
       <b-row>
         <b-col xl="11">
-          <b-textarea v-model="message"></b-textarea>
+          <b-textarea id="" v-model="message"></b-textarea>
         </b-col>
         <b-col sm="1">
           <b-button v-on:click.prevent="sendMessage(message)" class="send" :disabled="message === ''">
@@ -29,9 +29,6 @@
       </b-row>
     </b-col>
     <b-col></b-col>
-    <div>
-
-    </div>
   </b-container>
 </template>
 
@@ -57,27 +54,25 @@ export default {
   },
   computed: mapGetters(['getAllMessages']),
   methods: {
-    sendMessage: function (message) {
+    sendMessage: function (m) {
       function timeFormat(time) {
         if(time < 10) return `0` + time
         else return time.toString()
       }
       const currentDate = new Date()
-      const h = currentDate.getHours()
-      const m = currentDate.getMinutes()
-      const time  = timeFormat(h) + ':' + timeFormat(m)
-
-      console.log(time)
+      const hours = currentDate.getHours()
+      const min = currentDate.getMinutes()
+      const time  = timeFormat(hours) + ':' + timeFormat(min)
+      this.message = ''
       this.$socket.send(JSON.stringify({
             feat: this.$store.getters.getFeat,
             message: {
               id: null,
               author: this.$store.getters.getUsername,
-              message: message,
+              message: m,
               wasSent: time
             },
-          }
-      ))
+          }))
     }
   },
   // beforeMount() {

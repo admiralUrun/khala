@@ -14,10 +14,9 @@ export const store  = new Vuex.Store({
             state.username = username
         },
         SOCKET_ONMESSAGE(state, data)  {
-            console.log(data)
             const feat = data.feat
             const messages = data.messages
-            if(state.messages.length + messages.length >= 100) {
+            if(state.messages.length + messages.length >= 50) {
                 state.messages = state.messages.slice(messages.length)
             }
             state.feat = feat
